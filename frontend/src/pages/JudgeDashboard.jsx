@@ -159,7 +159,6 @@ const JudgeDashboard = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
     toast.success('Logged out successfully');
   };
 

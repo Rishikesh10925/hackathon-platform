@@ -5,7 +5,7 @@ import { Toaster } from "react-hot-toast";
 // App functionality imports
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import LoginPage from "./pages/LoginPage";
+import LandingPage from "./pages/LandingPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import JudgeDashboard from "./pages/JudgeDashboard";
 import CreateEvent from "./pages/CreateEvent";
@@ -21,14 +21,13 @@ import "@aws-amplify/ui-react/styles.css";
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/admin" replace />} />
-      <Route path="/login" element={<Navigate to="/admin" replace />} />
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/login" element={<Navigate to="/" replace />} />
 
       <Route path="/admin" element={<ProtectedRoute allowedRole="admin"><AdminDashboard /></ProtectedRoute>} />
       <Route path="/create-event" element={<ProtectedRoute allowedRole="admin"><CreateEvent /></ProtectedRoute>} />
       <Route path="/add-team" element={<ProtectedRoute allowedRole="admin"><AddTeam /></ProtectedRoute>} />
       <Route path="/add-judge" element={<ProtectedRoute allowedRole="admin"><AddJudge /></ProtectedRoute>} />
-      <Route path="/manage-events" element={<ProtectedRoute allowedRole="admin"><ManageEvents /></ProtectedRoute>} />
       <Route path="/manage-events" element={<ProtectedRoute allowedRole="admin"><ManageEvents /></ProtectedRoute>} />
       <Route path="/leaderboard" element={<ProtectedRoute allowedRole="admin"><Leaderboard /></ProtectedRoute>} />
       
@@ -47,7 +46,10 @@ function AuthSynchronizer({ amplifyUser }) {
                        amplifyUser.signInUserSession?.idToken?.payload?.["custom:role"]?.toLowerCase() ||
                        "admin";
 
-      login(userRole, amplifyUser.username || "AWS_User");
+      const userEmail = amplifyUser.attributes?.email || amplifyUser.username || "AWS_User";
+
+      // Keep landing page as first screen and only sync local user state here.
+      login(userRole, userEmail, { redirect: false });
     }
   }, [amplifyUser, isAuthenticated, login]);
 
