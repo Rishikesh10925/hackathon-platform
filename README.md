@@ -5,6 +5,7 @@ End-to-end platform to run hackathons with role-based access, event management, 
 ## Maintainer
 
 - **Author:** Rishikesh
+- **Mentor:** Naresh Vurukonda
 - **Role:** Full-Stack Developer (Frontend + AWS Serverless)
 - **Focus Areas:** React, AWS Lambda, API Gateway, DynamoDB, Cognito
 
