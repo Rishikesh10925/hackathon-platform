@@ -227,6 +227,3 @@ Deploy each Lambda in `backend/lambdas`, create corresponding API Gateway routes
 - Audit trail for score edits
 - E2E test suite
 
-## License
-
-MIT (recommended). Add a `LICENSE` file before public release.
