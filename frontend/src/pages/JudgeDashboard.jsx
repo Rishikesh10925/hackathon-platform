@@ -6,6 +6,7 @@ import { LogOut, CheckCircle2, CircleDashed, Users, Presentation, Search, Star, 
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { fetchAuthSession, fetchUserAttributes } from 'aws-amplify/auth';
+import { API_BASE_URL } from '../config';
 
 const unwrapApiPayload = (data) => {
   if (!data) return {};
@@ -84,7 +85,7 @@ const JudgeDashboard = () => {
 
         // 1. Fetch Judges to find out which EventID this judge is assigned to
         try {
-          const judgeRes = await axios.get('https://xe6yu454x0.execute-api.us-east-1.amazonaws.com/getJudges');
+          const judgeRes = await axios.get(`${API_BASE_URL}/getJudges`);
           const judgePayload = unwrapApiPayload(judgeRes.data);
           const judgeList = Array.isArray(judgePayload?.judges)
             ? judgePayload.judges
@@ -113,7 +114,7 @@ const JudgeDashboard = () => {
         }
 
         // 2. Fetch Teams and Filter them
-        const response = await axios.get('https://xe6yu454x0.execute-api.us-east-1.amazonaws.com/getTeams');
+        const response = await axios.get(`${API_BASE_URL}/getTeams`);
         const teamsPayload = unwrapApiPayload(response.data);
         let allTeams = [];
         if(teamsPayload && teamsPayload.teams) {
@@ -176,7 +177,7 @@ const JudgeDashboard = () => {
     
     try {
       // In a real app, grab eventId from the team object or context. We use a placeholder matching the blueprint.
-      const API_URL = 'https://xe6yu454x0.execute-api.us-east-1.amazonaws.com/submitScore'; 
+      const API_URL = `${API_BASE_URL}/submitScore`; 
       const judgeId = user?.email || "JUDGE_123";
 
       // You can wrap this in toast.promise if preferred

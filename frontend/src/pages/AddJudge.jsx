@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { UserCheck, ArrowLeft, Send, Briefcase, Mail, Building, Key } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { API_BASE_URL } from '../config';
 
 const AddJudge = () => {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const AddJudge = () => {
       };
 
       const response = await toast.promise(
-        axios.post('https://xe6yu454x0.execute-api.us-east-1.amazonaws.com/addJudge', payload),
+        axios.post(`${API_BASE_URL}/addJudge`, payload),
         {
           loading: 'Inviting Judge...',
           success: `${judgeData.fullName} invited as Judge! ⚖️`,

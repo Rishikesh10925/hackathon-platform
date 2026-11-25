@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Settings, Plus, Trash2, Save, ArrowLeft, Calendar, Users, Target, CheckCircle2, Award } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 const CreateEvent = () => {
   const navigate = useNavigate();
@@ -76,7 +77,7 @@ const CreateEvent = () => {
     
     try {
       // API Endpoint for creating event
-      const API_URL = 'https://xe6yu454x0.execute-api.us-east-1.amazonaws.com/createEvent';
+      const API_URL = `${API_BASE_URL}/createEvent`;
 
       const response = await axios.post(API_URL, payload);
 

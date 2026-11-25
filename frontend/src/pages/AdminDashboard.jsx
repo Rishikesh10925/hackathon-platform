@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { LayoutDashboard, CalendarDays, Users, LogOut, Plus, Trophy, BrainCircuit, Activity, ChevronRight, Gavel, BarChart3, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -18,13 +19,13 @@ const AdminDashboard = () => {
     const fetchDashboardData = async () => {
       try {
         // Fetch events
-        const eventRes = await axios.get('https://xe6yu454x0.execute-api.us-east-1.amazonaws.com/getEvents');
+        const eventRes = await axios.get(`${API_BASE_URL}/getEvents`);
         const fetchedEvents = (eventRes.data && eventRes.data.events) ? eventRes.data.events : (Array.isArray(eventRes.data) ? eventRes.data : []);
         setEvents(fetchedEvents);
 
         // Fetch teams to cross-reference counts
         try {
-          const teamRes = await axios.get('https://xe6yu454x0.execute-api.us-east-1.amazonaws.com/getTeams');
+          const teamRes = await axios.get(`${API_BASE_URL}/getTeams`);
           if (teamRes.data && teamRes.data.teams) {
             setTeams(teamRes.data.teams);
           }
@@ -34,7 +35,7 @@ const AdminDashboard = () => {
 
         // Fetch judges to cross-reference counts
         try {
-          const judgeRes = await axios.get('https://xe6yu454x0.execute-api.us-east-1.amazonaws.com/getJudges');
+          const judgeRes = await axios.get(`${API_BASE_URL}/getJudges`);
           if (judgeRes.data && judgeRes.data.judges) {
             setJudges(judgeRes.data.judges);
           }

@@ -2,12 +2,11 @@
 
 End-to-end platform to run hackathons with role-based access, event management, judge-specific queues, and live scoring powered by AWS.
 
-## Maintainer
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
+![AWS Lambda](https://img.shields.io/badge/AWS-Lambda%20%C2%B7%20API%20Gateway%20%C2%B7%20DynamoDB%20%C2%B7%20Cognito-FF9900?logo=amazonwebservices&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
 
-- **Author:** Rishikesh
-- **Mentor:** Naresh Vurukonda
-- **Role:** Full-Stack Developer (Frontend + AWS Serverless)
-- **Focus Areas:** React, AWS Lambda, API Gateway, DynamoDB, Cognito
+---
 
 ## Overview
 
@@ -66,46 +65,26 @@ DynamoDB Tables (Events, Teams, Judges)
 ## Project Structure
 
 ```text
-Vcc/
+hackathon-platform/
 ├─ backend/
 │  └─ lambdas/
 │     ├─ getJudges.mjs
 │     └─ getTeams.mjs
 ├─ frontend/
 │  ├─ src/
-│  │  ├─ components/
-│  │  ├─ context/
-│  │  ├─ pages/
-│  │  │  ├─ AdminDashboard.jsx
-│  │  │  ├─ JudgeDashboard.jsx
-│  │  │  ├─ Leaderboard.jsx
-│  │  │  ├─ ManageEvents.jsx
-│  │  │  ├─ CreateEvent.jsx
-│  │  │  ├─ AddTeam.jsx
-│  │  │  └─ AddJudge.jsx
+│  │  ├─ components/ProtectedRoute.jsx
+│  │  ├─ context/AuthContext.jsx
+│  │  ├─ pages/          # Landing, Login, AdminDashboard, JudgeDashboard, Leaderboard,
+│  │  │                  # ManageEvents, CreateEvent, AddTeam, AddJudge
+│  │  ├─ aws-exports.js  # Cognito user pool configuration
+│  │  ├─ config.js       # API base URL (VITE_API_BASE_URL)
 │  │  ├─ App.jsx
-│  │  └─ main.jsx
-│  ├─ aws-exports.js
+│  │  └─ main.jsx        # attaches the Cognito ID token to every API request
 │  └─ package.json
 └─ README.md
 ```
 
-## Key Features
-
-### Admin Dashboard
-- Live event, team, and judge metrics.
-- Event-level team/judge counts.
-- Direct action route to event leaderboard.
-
-### Judge Dashboard
-- Resolves current signed-in identity from Cognito attributes.
-- Finds judge assignment via `Judges.Email` to `EventID`.
-- Filters queue to teams only in assigned event.
-- Submits score payloads to `/submitScore`.
-
-### Leaderboard + Event Management
-- Event-aware leaderboard route with query param support.
-- Manage Events page for browsing and handling event records.
+> Only the `getJudges` and `getTeams` Lambda handlers are in this repository. The other routes the frontend calls (`getEvents`, `createEvent`, `addTeam`, `addJudge`, `submitScore`, `leaderboard`) are deployed in AWS but their source has not been added yet.
 
 ## API Contract
 
@@ -115,10 +94,11 @@ Base URL example:
 
 Required endpoints:
 
-- `GET /getEvents`
-- `GET /getTeams`
-- `GET /getJudges`
+- `GET /getEvents`, `POST /createEvent`
+- `GET /getTeams`, `POST /addTeam`
+- `GET /getJudges`, `POST /addJudge`
 - `POST /submitScore`
+- `GET /leaderboard?eventId=<id>`
 
 Supported response formats:
 
@@ -170,8 +150,8 @@ Deploy each Lambda in `backend/lambdas`, create corresponding API Gateway routes
 
 ## Configuration Checklist
 
-- `frontend/src/aws-exports.js` points to your Cognito setup.
-- Frontend endpoint URLs match your deployed API Gateway stage.
+- `frontend/src/aws-exports.js` points to your Cognito user pool.
+- `VITE_API_BASE_URL` (in `frontend/.env.local`) points to your deployed API Gateway stage. Without it, `src/config.js` falls back to the original deployment.
 - Cognito users include role metadata (`custom:role` recommended).
 - Judge email in Cognito matches `Judges.Email` in DynamoDB.
 - Judge row has a valid `EventID`.
@@ -227,3 +207,6 @@ Deploy each Lambda in `backend/lambdas`, create corresponding API Gateway routes
 - Audit trail for score edits
 - E2E test suite
 
+## Author
+
+Built by [Rishikesh](https://github.com/Rishikesh10925), mentored by Naresh Vurukonda.

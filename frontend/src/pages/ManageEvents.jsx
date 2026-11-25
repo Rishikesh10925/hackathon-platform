@@ -5,6 +5,7 @@ import { LayoutDashboard, CalendarDays, Users, LogOut, Plus, Trophy, BrainCircui
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 const ManageEvents = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const ManageEvents = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get('https://xe6yu454x0.execute-api.us-east-1.amazonaws.com/getEvents');
+        const response = await axios.get(`${API_BASE_URL}/getEvents`);
         if (response.data && response.data.events) {
           setEvents(response.data.events);
         } else if (Array.isArray(response.data)) {

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Trophy, ArrowLeft, Download, Medal, ChevronDown, Filter, Search } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 const Leaderboard = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const Leaderboard = () => {
     const toastId = toast.loading('Loading leaderboard...');
 
     try {
-      const API_URL = `https://xe6yu454x0.execute-api.us-east-1.amazonaws.com/leaderboard?eventId=${eventId}`;
+      const API_URL = `${API_BASE_URL}/leaderboard?eventId=${eventId}`;
       const response = await axios.get(API_URL);
       
       // AWS returns the array of scores sorted by rank assuming Lambda handles sorting

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Users, Plus, Trash2, ArrowLeft, Send, Link as LinkIcon, Code2, Target } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 const AddTeam = () => {
   const [loading, setLoading] = useState(false);
@@ -41,7 +42,7 @@ const AddTeam = () => {
     const toastId = toast.loading('Registering team...');
 
     try {
-      const API_URL = 'https://xe6yu454x0.execute-api.us-east-1.amazonaws.com/addTeam';
+      const API_URL = `${API_BASE_URL}/addTeam`;
 
       await axios.post(API_URL, {
         EventID: eventId,
